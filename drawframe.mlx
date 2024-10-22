@@ -1,0 +1,54 @@
+function drawframe(f)
+    % EIGENWALKER  Human gait
+    % Cleve's Corner, http://blogs.mathworks.com/cleve/2016/04/11.
+    period = 151.5751;
+    omega = 2*pi/period;
+    fps = 48;
+    dt = 2*pi/omega/fps;
+    scale = 0.1;
+    t = (f-1)*dt;
+    c = scale*[1 sin(omega*t) cos(omega*t) sin(2*omega*t) cos(2*omega*t)]';
+    % Old coefficients: 849 chars
+    % New compressed as string: 268 chars
+    V=reshape(rescale('ᇲ≔⊍ἝᇚҫĹǞᘬᠹᥐሑૢୋ൥ᎊᗢ౳ᅰᄀႀఴᔳඔᢾᆓኇᅲᢇൺ耀伢彀獢燘珮徬侲ᦼ㊴傽垧傭㋻ᦾᆐህဲᅕᅉᅇ࿳ᆟቔᇾᅓᅨᅑላቤᇒয়ഖႰᇚጃᝨᬿ⎆ᯔᇔᇔᇔࠊ0ᇪၧቤᆿᇪሓᅤᎰჴᏥᇐᇪሃ࿭ያၵოၡႈႈၾၑ႒ያኑჁᄂႿቿዧᇠ࿟ႆᅾᇠቂፂᏭ൓ፂᆭᇨራႄᚒᇨᇒቂሕᇨᆹᆙላᙄቌᆩᇪሩᅾඌᇨᇾሡᇦᇬᇰᆯᇁᇨᇢᇪᇪᇪᇬᇨᆝሳᇒᅴᅪᅬᇐሱᒂቐჾჾჼቚᒯቷዥ኏ኃቿኇኑዚᄒዣቷቷቷዥჼᇪሸሇᇮᇪᇢᆿᆄሇቈᇤᇨᇦᆈᆿሟᇺላሩሯርሉᇨ࿙ᐂኋቱ኉ᐆ࿀ኗᇴበንን኏ቌᆹᐆሥናኙኗሯᐌ'-'0',-2227,13837),45,5);
+    X = reshape(V*c,15,3);
+    L = {[1 5],[5 12],[2 3 4 5 6 7 8],[9 10 11 12 13 14 15]};
+    C = {'#ff7518' "#000" "#000" "#6E260E"};
+    M = {'none' 'none' 'h' '^'};
+    W = [4 10 4 6];
+    p = zeros(4,1);
+    cla reset
+    set(gca,'position',[0 0 1 1],'clipping','off')
+    daspect([1 1 1])
+    axis([-750 750 -750 750 0 1550])
+    xticks([]);
+    zticks([]);
+    % Make a treadmill like thing for him to walk on
+    span=750*2;
+    offset=f/48*span;
+    yticks(linspace(-750-span-offset,750+span-offset,10));
+    yticklabels([]);
+    for k = 1:4
+        p(k) = line(X(L{k},1),X(L{k},2),X(L{k},3), ...
+                    'color',C{k},'markerfacecolor',C{k},...
+                    'markeredgecolor','none',...
+                    'marker',M{k},'markersize',12, ...
+                    'markerindices',[1 numel(L{k})],...
+                    'linestyle','-','linewidth',W(k));
+    end
+    XH = [X(1,:); X(5,:)];
+    set(p(1),'xdata',XH(:,1),'ydata',XH(:,2),'zdata',XH(:,3))
+    % give him a pumpkin head (from minihack in previous year)
+    px=hgtransform('Matrix',makehgtform('translate',X(1,:),'scale',180));
+    [X,Y,Z]=sphere(200);
+    R=1+(-(1-mod(0:.1:20,2)).^2)/20;
+    surface(px,R.*X,R.*Y,(.8+(0-(1:-.01:-1)'.^4)*.2).*Z.*R,'FaceC','#ff7518','EdgeC','n')
+    surface(px,X/12,Y/12,Z/2+.6,'FaceC', '#008000', 'EdgeC','n')
+    material([ .6, .9, .3, 2, .5 ])
+    
+    box on
+    grid on
+    view(160,10)
+    camlight
+    
+end
