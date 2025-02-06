@@ -18,3 +18,4 @@ function K = AttitudeLQR()
     R = 1; % Don't care, something with elec. power
     K = lqr(A, B, Q, R); % Compute optimal gain matrix K
 end
+
