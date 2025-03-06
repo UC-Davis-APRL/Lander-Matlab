@@ -11,7 +11,7 @@ B = [0, 0, 0;
     1/m, 0, 0;
     0, 1/m, 0;
     0, 0, 1/m]; % Need to flip z-axis force to upward
-Q = diag([1, 1, 1.5, 1, 1, 1]); % Can test later
+Q = diag([1, 100, 1, 1, 1, 1]); % Can test later
 R = 1; % Don't care, something with elec. power
 K1 = lqr(A, B, Q, R); % Compute optimal gain matrix K
 
@@ -34,3 +34,5 @@ Q = diag([1, 1, 1, 1, 1, 1]); % Can test later
 R = 1; % Don't care, something with elec. power
 K2 = lqr(A, B, Q, R); % Compute optimal gain matrix K
 
+K1  = round(K1, 4)
+K2  = round(K2, 4)
